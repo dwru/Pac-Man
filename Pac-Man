@@ -1,0 +1,174 @@
+package packman;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.Random;
+import javax.swing.JFrame;
+import javax.swing.Timer;
+
+public class PackMan extends Panel implements KeyListener, ActionListener {
+
+    PackMan() {
+        this.setBackground(Color.black);
+    }
+    Timer tm = new Timer(60, this);
+    static int y = 240;
+    static int x = 250;
+    static int sa = 23;
+    static int mouth = 315;
+    static int pacmanSize = 100;
+    static int score = 0;
+    static int xFood = 300;
+    static int yFood = 350;
+    static int foodSize = 25;
+
+    @Override
+    public void paint(Graphics D) {
+        D.setColor(Color.WHITE);
+        D.setFont(new Font("Century Gothic", Font.BOLD, 20));
+        D.drawString("Score Goal: 10", 40, 40);
+    D.setColor(Color.YELLOW);
+        D.fillArc(x, y, pacmanSize, pacmanSize, sa, mouth);
+    D.setColor(Color.WHITE);
+        D.fillOval(xFood, yFood, foodSize, foodSize);
+
+        if (score == 10) {
+           D.setColor(Color.WHITE);
+           D.setFont(new Font("Century Gothic", Font.BOLD, 50));
+           D.drawString("GAME OVER", 160, 300);
+           
+        }
+        D.setColor(Color.WHITE);
+        D.setFont(new Font("Century Gothic", Font.BOLD,20));
+        D.drawString("Score:"+score, x-20, y-10);
+
+         tm.start();
+    }
+
+    public static void main(String args[]) {
+        JFrame frame = new JFrame();
+        PackMan panel = new PackMan();
+        panel.addKeyListener(panel);
+        frame.add(panel);
+        frame.setSize(600, 600);
+        frame.setVisible(true);
+        frame.setResizable(false);
+        frame.setDefaultCloseOperation(
+                JFrame.EXIT_ON_CLOSE);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+    if(score < 10){
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+            if (y <= -100)
+            {
+                y = (getHeight());
+            } else {
+                y -= 4;
+            }
+
+            if (y <= -500) {
+                y = getWidth();
+            }
+            y -= 5;
+
+            sa = 113;
+            if (y % 2 == 0) {
+                mouth = 360;
+            } else {
+                mouth = 315;
+            }
+        }
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            if (y >= (getHeight() - 0))
+            {
+                y = -90;
+            } else {
+                y += 2;
+            }
+
+            if (y >= getWidth()) {
+                y = -400;
+            }
+            y += 5;
+
+            sa = 293;
+            if (y % 2 == 0) {
+                mouth = 360;
+            } else {
+                mouth = 315;
+            }
+        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            if (x <= -100)
+            {
+                x = getWidth();
+            } else {
+                x -= 2;
+            }
+
+            if (x <= -400) {
+                x = getWidth();
+            }
+            x -= 5;
+
+            sa = 200;
+            if (x % 2 == 0) {
+                mouth = 360;
+            } else {
+                mouth = 315;
+            }
+
+        }
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            if (x >= (getHeight() - 0))
+            {
+                x = -110;
+            } else {
+                x += 4;
+            }
+
+            if (x >= getWidth()) {
+                x = - 300;
+
+            }
+            x += 5;
+
+            sa = 23;
+            if (x % 2 == 0) {
+                mouth = 360;
+            } else {
+                mouth = 315;
+            }
+
+        }
+
+        if (x + pacmanSize - 25 > xFood && y + pacmanSize - 25 > yFood
+                && x < xFood + foodSize && y < yFood + foodSize) {
+
+            xFood = new Random().nextInt(getWidth() - 150) + 50;
+
+            yFood = new Random().nextInt(getHeight() - 150) + 50;
+
+            score += 1;
+
+        }
+
+        repaint();
+    }
+    }
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
+    }
+}
